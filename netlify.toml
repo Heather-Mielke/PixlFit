@@ -5,3 +5,11 @@
 [build]
 	command = "npm run build"
 	publish = "dist"
+
+# Browsers often request /favicon.ico before reading <link rel="icon">. The asset is a PNG
+# (valid ICO is a different binary format); serve it with the correct type via rewrite.
+[[redirects]]
+	from = "/favicon.ico"
+	to = "/favicon.png"
+	status = 200
+	force = true
