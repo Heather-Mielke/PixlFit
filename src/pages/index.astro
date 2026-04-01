@@ -1,11 +1,888 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/pixlfit.css';
 ---
 
 <Layout>
-	<Welcome />
+	<div class="page-layout">
+	<main class="app-shell">
+		<header class="topbar">
+			<div class="brand">
+				<div class="brand-icon" aria-hidden="true">
+					<!-- Lucide: scissors -->
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-scissors">
+						<circle cx="6" cy="6" r="3" />
+						<path d="M8.12 8.12 12 12" />
+						<path d="M20 4 8.12 15.88" />
+						<circle cx="6" cy="18" r="3" />
+						<path d="M14.8 14.8 20 20" />
+					</svg>
+				</div>
+				<span>Pixl<span class="fit-accent">Fit</span></span>
+			</div>
+			<p>Resize - Crop - Style, all at once</p>
+		</header>
+
+		<section class="hero">
+			<h1>Make every image <span>fit perfectly</span></h1>
+			<p>
+				Upload your images, pick a size, apply filters, and download them all -
+				uniform and beautiful.
+			</p>
+		</section>
+
+		<section class="upload-area" id="dropZone">
+			<input id="fileInput" type="file" accept="image/png,image/jpeg,image/webp" multiple />
+			<div class="upload-content">
+				<div class="upload-icon" aria-hidden="true">
+					<!-- Lucide: image-plus -->
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-image-plus">
+						<path d="M16 5h6" />
+						<path d="M19 2v6" />
+						<path d="M21 11.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7.5" />
+						<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+						<circle cx="9" cy="9" r="2" />
+					</svg>
+				</div>
+				<h2>Drop images or click to upload</h2>
+				<p>PNG, JPG, WebP - as many as your browser can handle</p>
+			</div>
+		</section>
+
+		<section class="workspace hidden" id="workspace">
+			<aside class="filters-panel">
+				<h3>Output Size</h3>
+				<div class="crop-presets">
+					<button type="button" class="preset-btn active" data-preset="square">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="5.5" y="5.5" width="13" height="13" rx="2.5"></rect>
+						</svg>
+						<span class="preset-label">Square</span>
+						<span class="preset-dims">1080×1080</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="landscape">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="4.5" y="7.5" width="15" height="9" rx="2.5"></rect>
+						</svg>
+						<span class="preset-label">Landscape</span>
+						<span class="preset-dims">1920×1080</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="portrait">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="7.5" y="4.5" width="9" height="15" rx="2.5"></rect>
+						</svg>
+						<span class="preset-label">Portrait</span>
+						<span class="preset-dims">1080×1350</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="circle">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<circle cx="12" cy="12" r="6.5"></circle>
+						</svg>
+						<span class="preset-label">Circle</span>
+						<span class="preset-dims">1080×1080</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="story">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="6" y="3" width="12" height="18" rx="2"></rect>
+							<path d="M12 18h.01"></path>
+						</svg>
+						<span class="preset-label">Story / Reel</span>
+						<span class="preset-dims">1080×1920</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="banner">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="2" y="9" width="20" height="6" rx="1.5"></rect>
+						</svg>
+						<span class="preset-label">Banner</span>
+						<span class="preset-dims">1500×500</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="profile">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="4" y="4" width="16" height="16" rx="2"></rect>
+							<circle cx="12" cy="12" r="3.5"></circle>
+						</svg>
+						<span class="preset-label">Profile Pic</span>
+						<span class="preset-dims">400×400</span>
+					</button>
+					<button type="button" class="preset-btn" data-preset="thumbnail">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+							<rect x="2" y="5" width="20" height="12" rx="2"></rect>
+							<line x1="8" y1="21" x2="16" y2="21"></line>
+							<line x1="12" y1="17" x2="12" y2="21"></line>
+						</svg>
+						<span class="preset-label">Thumbnail</span>
+						<span class="preset-dims">1280×720</span>
+					</button>
+				</div>
+				<div class="custom-size">
+					<div class="custom-size-row">
+						<div class="custom-size-field">
+							<label for="outputWidth">Width (px)</label>
+							<input id="outputWidth" type="number" min="50" step="1" value="1080" />
+						</div>
+						<span class="custom-size-x" aria-hidden="true">×</span>
+						<div class="custom-size-field">
+							<label for="outputHeight">Height (px)</label>
+							<input id="outputHeight" type="number" min="50" step="1" value="1080" />
+						</div>
+					</div>
+				</div>
+
+				<h3>Filters</h3>
+				<label class="filter-row" for="cornerRadius">
+					<span class="filter-name">
+						<!-- Lucide: square-round-corner -->
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path d="M21 11a8 8 0 0 0-8-8" />
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+						</svg>
+						<span>Corner Radius</span>
+					</span>
+					<span id="cornerRadiusValue">0px</span>
+				</label>
+				<input id="cornerRadius" type="range" min="0" max="80" value="0" />
+
+				<label class="filter-row" for="brightness">
+					<span class="filter-name">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="12" cy="12" r="4" />
+							<path d="M12 2v2" />
+							<path d="M12 20v2" />
+							<path d="m4.93 4.93 1.41 1.41" />
+							<path d="m17.66 17.66 1.41 1.41" />
+							<path d="M2 12h2" />
+							<path d="M20 12h2" />
+							<path d="m6.34 17.66-1.41 1.41" />
+							<path d="m19.07 4.93-1.41 1.41" />
+						</svg>
+						<span>Brightness</span>
+					</span>
+					<span id="brightnessValue">100%</span>
+				</label>
+				<input id="brightness" type="range" min="0" max="200" value="100" />
+
+				<label class="filter-row" for="contrast">
+					<span class="filter-name">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="12" cy="12" r="8" />
+							<path d="M12 4a8 8 0 0 1 0 16V4Z" />
+						</svg>
+						<span>Contrast</span>
+					</span>
+					<span id="contrastValue">100%</span>
+				</label>
+				<input id="contrast" type="range" min="0" max="200" value="100" />
+
+				<label class="filter-row" for="saturation">
+					<span class="filter-name">
+						<!-- Lucide: droplets -->
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z" />
+							<path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97" />
+						</svg>
+						<span>Saturation</span>
+					</span>
+					<span id="saturationValue">100%</span>
+				</label>
+				<input id="saturation" type="range" min="0" max="200" value="100" />
+
+				<label class="filter-row" for="hueShift">
+					<span class="filter-name">
+						<!-- Lucide: palette -->
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<circle cx="13.5" cy="6.5" r=".5" fill="currentColor" stroke="none" />
+							<circle cx="17.5" cy="10.5" r=".5" fill="currentColor" stroke="none" />
+							<circle cx="8.5" cy="7.5" r=".5" fill="currentColor" stroke="none" />
+							<circle cx="6.5" cy="12.5" r=".5" fill="currentColor" stroke="none" />
+							<path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z" />
+						</svg>
+						<span>Hue Shift</span>
+					</span>
+					<span id="hueShiftValue">0deg</span>
+				</label>
+				<input id="hueShift" type="range" min="0" max="360" value="0" />
+
+				<label class="filter-row" for="blur">
+					<span class="filter-name">
+						<!-- Lucide: cloud-fog -->
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242" />
+							<path d="M16 17H7" />
+							<path d="M17 21H9" />
+						</svg>
+						<span>Blur</span>
+					</span>
+					<span id="blurValue">0px</span>
+				</label>
+				<input id="blur" type="range" min="0" max="10" value="0" />
+
+				<label class="filter-row" for="grayscale">
+					<span class="filter-name">
+						<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+							<path d="M6 4v16" />
+							<path d="M12 4v16" />
+							<path d="M18 4v16" />
+						</svg>
+						<span>Grayscale</span>
+					</span>
+					<span id="grayscaleValue">0%</span>
+				</label>
+				<input id="grayscale" type="range" min="0" max="100" value="0" />
+
+				<div class="actions-panel">
+					<button id="generateBtn" type="button" class="action-primary">
+						<!-- Lucide: sparkles -->
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="btn-icon lucide lucide-sparkles" aria-hidden="true">
+							<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+							<path d="M20 3v4" />
+							<path d="M22 5h-4" />
+							<path d="M4 17v2" />
+							<path d="M5 18h2" />
+						</svg>
+						Generate <span id="generateCount">0</span> Images
+					</button>
+					<button id="downloadAllBtn" type="button" class="action-download-all hidden">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="btn-icon lucide lucide-download" aria-hidden="true">
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+							<polyline points="7 10 12 15 17 10" />
+							<line x1="12" x2="12" y1="15" y2="3" />
+						</svg>
+						Download All
+					</button>
+					<button id="clearBtn" type="button" class="action-secondary">
+						<!-- Lucide: trash-2 -->
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="btn-icon lucide lucide-trash-2" aria-hidden="true">
+							<path d="M3 6h18" />
+							<path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+							<path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+							<line x1="10" x2="10" y1="11" y2="17" />
+							<line x1="14" x2="14" y1="11" y2="17" />
+						</svg>
+						Clear All
+					</button>
+					<div class="loaded-count">
+						<!-- Lucide: images -->
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="loaded-icon lucide lucide-images" aria-hidden="true">
+							<path d="M18 22H4a2 2 0 0 1-2-2V6" />
+							<path d="m22 13-1.296-1.296a2.41 2.41 0 0 0-3.408 0L11 18" />
+							<circle cx="12" cy="8" r="2" />
+							<rect width="16" height="16" x="6" y="2" rx="2" />
+						</svg>
+						<span><span id="loadedCount" class="loaded-count-num">0</span> images loaded</span>
+					</div>
+				</div>
+			</aside>
+
+			<section class="results-panel">
+				<div class="results-topline">
+					<h3>Results <span id="resultsSizeLabel">1080 × 1080</span></h3>
+					<p>Drag images to reposition within the frame</p>
+				</div>
+				<div class="results-placeholder" id="resultsPlaceholder">
+					<div class="results-placeholder-inner">
+						<div class="placeholder-icon" aria-hidden="true">
+							<!-- Lucide: sparkles -->
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-sparkles">
+								<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+								<path d="M20 3v4" />
+								<path d="M22 5h-4" />
+								<path d="M4 17v2" />
+								<path d="M5 18h2" />
+							</svg>
+						</div>
+						<h4>Ready to generate</h4>
+						<p>Choose your size and filters, then hit Generate to see your images cropped and styled.</p>
+					</div>
+				</div>
+				<div class="cards-grid hidden" id="cardsGrid"></div>
+			</section>
+		</section>
+	</main>
+
+	<SiteFooter />
+	</div>
 </Layout>
+
+<script>
+	const fileInput = document.getElementById('fileInput');
+	const dropZone = document.getElementById('dropZone');
+	const workspace = document.getElementById('workspace');
+	const cardsGrid = document.getElementById('cardsGrid');
+	const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+	const resultsSizeLabel = document.getElementById('resultsSizeLabel');
+	const cornerRadius = document.getElementById('cornerRadius');
+	const brightness = document.getElementById('brightness');
+	const contrast = document.getElementById('contrast');
+	const saturation = document.getElementById('saturation');
+	const hueShift = document.getElementById('hueShift');
+	const blur = document.getElementById('blur');
+	const grayscale = document.getElementById('grayscale');
+	const outputWidth = document.getElementById('outputWidth');
+	const outputHeight = document.getElementById('outputHeight');
+	const presetButtons = document.querySelectorAll('.preset-btn');
+	const generateBtn = document.getElementById('generateBtn');
+	const downloadAllBtn = document.getElementById('downloadAllBtn');
+	const clearBtn = document.getElementById('clearBtn');
+	const loadedCount = document.getElementById('loadedCount');
+	const generateCount = document.getElementById('generateCount');
+
+	const cornerRadiusValue = document.getElementById('cornerRadiusValue');
+	const brightnessValue = document.getElementById('brightnessValue');
+	const contrastValue = document.getElementById('contrastValue');
+	const saturationValue = document.getElementById('saturationValue');
+	const hueShiftValue = document.getElementById('hueShiftValue');
+	const blurValue = document.getElementById('blurValue');
+	const grayscaleValue = document.getElementById('grayscaleValue');
+
+	const imageStates = [];
+	let activePreset = 'square';
+
+	/** One window-level pan handler so N cards do not register N mousemove listeners. */
+	let activePan = null;
+
+	function onWindowPanMove(event) {
+		if (!activePan) return;
+		const x = event.clientX;
+		const y = event.clientY;
+		activePan.state.offsetX += x - activePan.lastX;
+		activePan.state.offsetY += y - activePan.lastY;
+		activePan.lastX = x;
+		activePan.lastY = y;
+		drawCard(activePan.state);
+	}
+
+	function onWindowPanEnd() {
+		activePan = null;
+	}
+
+	window.addEventListener('mousemove', onWindowPanMove);
+	window.addEventListener('mouseup', onWindowPanEnd);
+
+	let redrawCardsScheduled = false;
+
+	function scheduleRedrawCards() {
+		if (redrawCardsScheduled) return;
+		redrawCardsScheduled = true;
+		requestAnimationFrame(() => {
+			redrawCardsScheduled = false;
+			redrawCards();
+		});
+	}
+
+	function getOutputSize() {
+		const width = Math.max(50, Number(outputWidth.value) || 1080);
+		const height = Math.max(50, Number(outputHeight.value) || 1080);
+		return { width, height };
+	}
+
+	/** On-screen preview max width for multi-card layout; corner-radius preview math allows up to 500px (single card). Export uses full output dimensions. */
+	const PREVIEW_DISPLAY_MAX_W = 400;
+	const PREVIEW_DISPLAY_CAP_PX = 500;
+
+	function applyPreset(preset) {
+		activePreset = preset;
+		if (preset === 'square') {
+			outputWidth.value = '1080';
+			outputHeight.value = '1080';
+		}
+		if (preset === 'landscape') {
+			outputWidth.value = '1920';
+			outputHeight.value = '1080';
+		}
+		if (preset === 'portrait') {
+			outputWidth.value = '1080';
+			outputHeight.value = '1350';
+		}
+		if (preset === 'circle') {
+			outputWidth.value = '1080';
+			outputHeight.value = '1080';
+		}
+		if (preset === 'story') {
+			outputWidth.value = '1080';
+			outputHeight.value = '1920';
+		}
+		if (preset === 'banner') {
+			outputWidth.value = '1500';
+			outputHeight.value = '500';
+		}
+		if (preset === 'profile') {
+			outputWidth.value = '400';
+			outputHeight.value = '400';
+		}
+		if (preset === 'thumbnail') {
+			outputWidth.value = '1280';
+			outputHeight.value = '720';
+		}
+		presetButtons.forEach((button) => {
+			button.classList.toggle('active', button.dataset.preset === preset);
+		});
+		redrawCards();
+		updateMetaLabels();
+	}
+
+	function filterString() {
+		return `brightness(${brightness.value}%) contrast(${contrast.value}%) saturate(${saturation.value}%) hue-rotate(${hueShift.value}deg) blur(${blur.value}px) grayscale(${grayscale.value}%)`;
+	}
+
+	function updateMetaLabels() {
+		loadedCount.textContent = String(imageStates.length);
+		generateCount.textContent = String(imageStates.length);
+		const { width, height } = getOutputSize();
+		resultsSizeLabel.textContent = `${width} × ${height}`;
+	}
+
+	const WINDOWS_RESERVED_BASE = /^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/i;
+
+	/**
+	 * Produces a safe single-segment filename (no extension): strips control chars and
+	 * characters forbidden on common OSes, trims trailing dots/spaces, avoids Windows
+	 * reserved device names, and caps length so `name.png` stays within typical limits.
+	 */
+	function sanitizeDownloadFileBase(raw) {
+		let base = String(raw ?? '').trim();
+		if (!base) return 'image';
+
+		base = base.replace(/[\x00-\x1f\x7f<>:"/\\|?*%]/g, '-');
+		base = base.replace(/-+/g, '-');
+		base = base.replace(/^-+|-+$/g, '');
+
+		while (base.length && (base.endsWith(' ') || base.endsWith('.'))) {
+			base = base.slice(0, -1);
+		}
+		base = base.trim();
+
+		if (!base || /^\.+$/.test(base)) return 'image';
+
+		if (WINDOWS_RESERVED_BASE.test(base)) {
+			base = `file-${base}`;
+		}
+
+		const maxLen = 200;
+		if (base.length > maxLen) {
+			base = base.slice(0, maxLen);
+			while (base.length && (base.endsWith(' ') || base.endsWith('.'))) {
+				base = base.slice(0, -1);
+			}
+			base = base.trim();
+		}
+
+		return base || 'image';
+	}
+
+	/** Safe base name for PNG download (editable part only; extension is always .png). */
+	function getDownloadBaseName(state) {
+		return sanitizeDownloadFileBase(state.baseName ?? '');
+	}
+
+	function updateFilterLabels() {
+		cornerRadiusValue.textContent = `${cornerRadius.value}px`;
+		brightnessValue.textContent = `${brightness.value}%`;
+		contrastValue.textContent = `${contrast.value}%`;
+		saturationValue.textContent = `${saturation.value}%`;
+		hueShiftValue.textContent = `${hueShift.value}deg`;
+		blurValue.textContent = `${blur.value}px`;
+		grayscaleValue.textContent = `${grayscale.value}%`;
+	}
+
+	function updateFilterRangeFill(input) {
+		const min = Number(input.min);
+		const max = Number(input.max);
+		const val = Number(input.value);
+		const pct = max === min ? 0 : ((val - min) / (max - min)) * 100;
+		input.style.setProperty('--track-fill', `${pct}%`);
+	}
+
+	function refreshAllFilterRangeFills() {
+		document.querySelectorAll('.filters-panel input[type="range"]').forEach((el) => updateFilterRangeFill(el));
+	}
+
+	function clipOutputShape(ctx, width, height, radius, isCircle) {
+		ctx.beginPath();
+		if (isCircle) {
+			ctx.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, Math.PI * 2);
+		} else if (typeof ctx.roundRect === 'function') {
+			ctx.roundRect(0, 0, width, height, radius);
+		} else {
+			ctx.rect(0, 0, width, height);
+		}
+	}
+
+	/** Corner radius only applies to square, landscape, and banner; other presets stay sharp (circle uses its own clip). */
+	function getEffectiveCornerRadius() {
+		const r = Number(cornerRadius.value);
+		if (activePreset === 'square' || activePreset === 'landscape' || activePreset === 'banner') {
+			return Math.max(0, r);
+		}
+		return 0;
+	}
+
+	function applyCropFramePreviewStyle(frame) {
+		const { width: outW } = getOutputSize();
+		if (activePreset === 'circle') {
+			frame.style.borderRadius = '';
+			return;
+		}
+		const effR = getEffectiveCornerRadius();
+		if (effR > 0) {
+			const layoutW = frame.getBoundingClientRect().width;
+			const displayW =
+				layoutW > 1 ? Math.min(PREVIEW_DISPLAY_CAP_PX, layoutW) : PREVIEW_DISPLAY_MAX_W;
+			const previewR = Math.min(effR * (displayW / outW), displayW * 0.5);
+			frame.style.borderRadius = `${previewR}px`;
+		} else {
+			frame.style.borderRadius = '0px';
+		}
+	}
+
+	/**
+	 * Preview caps the longest canvas edge so many images + filters stay responsive.
+	 * Pass `{ export: true }` for downloads so the file matches the chosen output size.
+	 */
+	const PREVIEW_RENDER_MAX = 1280;
+
+	function drawCard(state, options = {}) {
+		if (!state.canvas || !state.image?.complete || state.image.naturalWidth === 0) return;
+		const exportMode = options.export === true;
+		const { width: lw, height: lh } = getOutputSize();
+		const isCircle = activePreset === 'circle';
+		const baseScale = Math.max(lw / state.image.width, lh / state.image.height);
+		const drawScale = baseScale * state.zoom;
+		const drawWidth = state.image.width * drawScale;
+		const drawHeight = state.image.height * drawScale;
+		const drawX = (lw - drawWidth) / 2 + state.offsetX;
+		const drawY = (lh - drawHeight) / 2 + state.offsetY;
+
+		let previewScale = 1;
+		if (!exportMode) {
+			const m = Math.max(lw, lh);
+			if (m > PREVIEW_RENDER_MAX) {
+				previewScale = PREVIEW_RENDER_MAX / m;
+			}
+		}
+
+		const cw = Math.max(1, Math.round(lw * previewScale));
+		const ch = Math.max(1, Math.round(lh * previewScale));
+
+		state.canvas.width = cw;
+		state.canvas.height = ch;
+		const ctx = state.canvas.getContext('2d');
+		if (!ctx) return;
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		if (previewScale < 1) {
+			ctx.scale(previewScale, previewScale);
+		}
+		ctx.clearRect(0, 0, lw, lh);
+		ctx.fillStyle = '#b8b8c2';
+		ctx.fillRect(0, 0, lw, lh);
+		ctx.save();
+		clipOutputShape(ctx, lw, lh, getEffectiveCornerRadius(), isCircle);
+		ctx.clip();
+		try {
+			ctx.filter = filterString();
+		} catch {
+			ctx.filter = 'none';
+		}
+		ctx.drawImage(state.image, drawX, drawY, drawWidth, drawHeight);
+		ctx.restore();
+	}
+
+	function renderCards() {
+		cardsGrid.innerHTML = '';
+		const { width: outW, height: outH } = getOutputSize();
+		imageStates.forEach((state) => {
+			const card = document.createElement('article');
+			card.className = 'result-card';
+			card.dataset.stateId = state.id;
+
+			const frameWrap = document.createElement('div');
+			frameWrap.className = 'crop-frame-wrap';
+
+			const frame = document.createElement('div');
+			frame.className = 'crop-frame';
+			frame.style.width = '100%';
+			frame.style.aspectRatio = `${outW} / ${outH}`;
+			frame.classList.toggle('circle', activePreset === 'circle');
+			state.canvas = document.createElement('canvas');
+			frame.appendChild(state.canvas);
+
+			const dragOverlay = document.createElement('div');
+			dragOverlay.className = 'crop-frame-drag-overlay';
+			dragOverlay.setAttribute('aria-hidden', 'true');
+			dragOverlay.innerHTML = `<div class="crop-frame-drag-hint">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="crop-frame-move-icon" aria-hidden="true">
+					<path d="M12 2v20" />
+					<path d="m15 19-3 3-3-3" />
+					<path d="m19 9 3 3-3 3" />
+					<path d="M2 12h20" />
+					<path d="m5 9-3 3 3 3" />
+					<path d="m9 5 3-3 3 3" />
+				</svg>
+				<span>Drag to reposition</span>
+			</div>`;
+			frame.appendChild(dragOverlay);
+
+			frame.addEventListener('mousedown', (event) => {
+				activePan = { state, lastX: event.clientX, lastY: event.clientY };
+			});
+
+			frameWrap.appendChild(frame);
+
+			const zoomRow = document.createElement('div');
+			zoomRow.className = 'zoom-row';
+			zoomRow.innerHTML = `<span class="zoom-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span>`;
+			const zoom = document.createElement('input');
+			zoom.type = 'range';
+			zoom.min = '0.1';
+			zoom.max = '4';
+			zoom.step = '0.01';
+			zoom.value = String(state.zoom);
+			zoom.className = 'zoom-range';
+			zoom.addEventListener('input', () => {
+				state.zoom = Number(zoom.value);
+				drawCard(state);
+			});
+			const zoomIn = document.createElement('span');
+			zoomIn.className = 'zoom-icon';
+			zoomIn.setAttribute('aria-hidden', 'true');
+			zoomIn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg>`;
+			zoomRow.append(zoom, zoomIn);
+
+			const footer = document.createElement('div');
+			footer.className = 'card-footer';
+
+			const nameField = document.createElement('div');
+			nameField.className = 'card-name-field';
+			const nameInput = document.createElement('input');
+			nameInput.type = 'text';
+			nameInput.className = 'card-name-input';
+			nameInput.value = state.baseName;
+			nameInput.setAttribute('spellcheck', 'false');
+			nameInput.setAttribute('aria-label', 'File name without extension');
+			nameInput.title = 'Edit name; download saves as PNG';
+			nameInput.addEventListener('input', () => {
+				state.baseName = nameInput.value;
+			});
+			const extSpan = document.createElement('span');
+			extSpan.className = 'card-name-ext';
+			extSpan.textContent = '.png';
+			extSpan.setAttribute('aria-hidden', 'true');
+			nameField.append(nameInput, extSpan);
+
+			const actions = document.createElement('div');
+			actions.className = 'card-actions';
+
+			const downloadBtn = document.createElement('button');
+			downloadBtn.type = 'button';
+			downloadBtn.className = 'card-icon-btn card-icon-btn--primary';
+			downloadBtn.setAttribute('data-download-btn', 'true');
+			downloadBtn.setAttribute('aria-label', 'Download as PNG');
+			downloadBtn.title = 'Download as PNG';
+			downloadBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>`;
+			downloadBtn.addEventListener('click', () => {
+				drawCard(state, { export: true });
+				const link = document.createElement('a');
+				link.href = state.canvas.toDataURL('image/png');
+				link.download = `${getDownloadBaseName(state)}.png`;
+				link.click();
+			});
+
+			const removeBtn = document.createElement('button');
+			removeBtn.type = 'button';
+			removeBtn.className = 'card-icon-btn card-icon-btn--danger';
+			removeBtn.setAttribute('aria-label', 'Remove image');
+			removeBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+			removeBtn.addEventListener('click', () => {
+				const idx = imageStates.findIndex((s) => s.id === state.id);
+				if (idx >= 0) imageStates.splice(idx, 1);
+				if (activePan?.state === state) activePan = null;
+				updateMetaLabels();
+				if (!imageStates.length) {
+					showPlaceholder();
+					cardsGrid.innerHTML = '';
+					syncWorkspaceVisibility();
+				} else {
+					card.remove();
+				}
+			});
+
+			actions.append(downloadBtn, removeBtn);
+			footer.append(nameField, actions);
+
+			card.append(frameWrap, zoomRow, footer);
+			cardsGrid.appendChild(card);
+			drawCard(state);
+			applyCropFramePreviewStyle(frame);
+			requestAnimationFrame(() => applyCropFramePreviewStyle(frame));
+		});
+	}
+
+	function redrawCards() {
+		const isCircle = activePreset === 'circle';
+		const { width: outW, height: outH } = getOutputSize();
+		cardsGrid.querySelectorAll('.crop-frame').forEach((frame) => {
+			frame.style.width = '100%';
+			frame.style.aspectRatio = `${outW} / ${outH}`;
+			frame.classList.toggle('circle', isCircle);
+			applyCropFramePreviewStyle(frame);
+		});
+		requestAnimationFrame(() => {
+			cardsGrid.querySelectorAll('.crop-frame').forEach((frame) => applyCropFramePreviewStyle(frame));
+		});
+		imageStates.forEach((state) => drawCard(state));
+	}
+
+	function showPlaceholder() {
+		resultsPlaceholder.classList.remove('hidden');
+		cardsGrid.classList.add('hidden');
+		updateDownloadAllVisibility();
+	}
+
+	function showCards() {
+		resultsPlaceholder.classList.add('hidden');
+		cardsGrid.classList.remove('hidden');
+		updateDownloadAllVisibility();
+	}
+
+	function updateDownloadAllVisibility() {
+		const show =
+			imageStates.length > 0 && !cardsGrid.classList.contains('hidden');
+		downloadAllBtn.classList.toggle('hidden', !show);
+	}
+
+	function syncWorkspaceVisibility() {
+		if (imageStates.length === 0) {
+			workspace.classList.add('hidden');
+			cardsGrid.innerHTML = '';
+		} else {
+			workspace.classList.remove('hidden');
+		}
+	}
+
+	function createImageState(file) {
+		return new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = () => {
+				const image = new Image();
+				image.onload = () => {
+					const lastDot = file.name.lastIndexOf('.');
+					const rawBase = lastDot > 0 ? file.name.slice(0, lastDot) : file.name;
+					const baseName = sanitizeDownloadFileBase(rawBase);
+					resolve({
+						id: crypto.randomUUID(),
+						baseName,
+						image,
+						zoom: 1,
+						offsetX: 0,
+						offsetY: 0,
+						canvas: null
+					});
+				};
+				image.onerror = reject;
+				image.src = reader.result;
+			};
+			reader.onerror = reject;
+			reader.readAsDataURL(file);
+		});
+	}
+
+	async function handleFiles(fileList) {
+		const files = Array.from(fileList).filter((file) => file.type.startsWith('image/'));
+		if (!files.length) return;
+		try {
+			const states = await Promise.all(files.map((file) => createImageState(file)));
+			imageStates.push(...states);
+			updateMetaLabels();
+			showPlaceholder();
+			syncWorkspaceVisibility();
+		} catch (err) {
+			console.error('PixlFit: could not load one or more images', err);
+		}
+	}
+
+	dropZone.addEventListener('click', () => fileInput.click());
+	fileInput.addEventListener('change', (event) => {
+		if (!event.target.files) return;
+		handleFiles(event.target.files);
+		fileInput.value = '';
+	});
+
+	['dragenter', 'dragover'].forEach((eventName) => {
+		dropZone.addEventListener(eventName, (event) => {
+			event.preventDefault();
+			dropZone.classList.add('dragging');
+		});
+	});
+	['dragleave', 'drop'].forEach((eventName) => {
+		dropZone.addEventListener(eventName, (event) => {
+			event.preventDefault();
+			dropZone.classList.remove('dragging');
+		});
+	});
+	dropZone.addEventListener('drop', (event) => {
+		if (!event.dataTransfer?.files) return;
+		handleFiles(event.dataTransfer.files);
+	});
+
+	[cornerRadius, brightness, contrast, saturation, hueShift, blur, grayscale].forEach((control) => {
+		control.addEventListener('input', () => {
+			updateFilterRangeFill(control);
+			updateFilterLabels();
+			scheduleRedrawCards();
+		});
+	});
+	outputWidth.addEventListener('input', () => {
+		activePreset = 'custom';
+		presetButtons.forEach((button) => button.classList.remove('active'));
+		scheduleRedrawCards();
+		updateMetaLabels();
+	});
+	outputHeight.addEventListener('input', () => {
+		activePreset = 'custom';
+		presetButtons.forEach((button) => button.classList.remove('active'));
+		scheduleRedrawCards();
+		updateMetaLabels();
+	});
+	presetButtons.forEach((button) => {
+		button.addEventListener('click', () => applyPreset(button.dataset.preset));
+	});
+	generateBtn.addEventListener('click', () => {
+		if (!imageStates.length) return;
+		renderCards();
+		showCards();
+		/* Redraw after the grid is visible — drawing while display:none can leave canvases blank in some browsers. */
+		requestAnimationFrame(() => {
+			imageStates.forEach((s) => drawCard(s));
+		});
+	});
+
+	downloadAllBtn.addEventListener('click', () => {
+		if (!imageStates.length || cardsGrid.classList.contains('hidden')) return;
+		imageStates.forEach((state, i) => {
+			setTimeout(() => {
+				drawCard(state, { export: true });
+				const link = document.createElement('a');
+				link.href = state.canvas.toDataURL('image/png');
+				link.download = `${getDownloadBaseName(state)}.png`;
+				link.click();
+			}, i * 200);
+		});
+	});
+
+	clearBtn.addEventListener('click', () => {
+		imageStates.length = 0;
+		cardsGrid.innerHTML = '';
+		fileInput.value = '';
+		updateMetaLabels();
+		showPlaceholder();
+		syncWorkspaceVisibility();
+	});
+	applyPreset('square');
+	updateFilterLabels();
+	refreshAllFilterRangeFills();
+	updateMetaLabels();
+	showPlaceholder();
+	updateDownloadAllVisibility();
+	syncWorkspaceVisibility();
+</script>
+
