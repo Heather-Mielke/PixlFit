@@ -1,46 +1,46 @@
-# Astro Starter Kit: Basics
+# PixlFit
+
+Static marketing and app site for **PixlFit** — a browser-based tool to upload images, pick output sizes (presets), crop, apply filters, and download batches. Processing runs in the client; nothing is uploaded to a PixlFit server for editing.
+
+Built with [Astro](https://astro.build/) (static output).
+
+## Requirements
+
+- [Node.js](https://nodejs.org/) **22.12+** (see `package.json` `engines`)
+
+## Setup
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Scripts
 
-## 🚀 Project Structure
+| Command           | Description                                      |
+| ----------------- | ------------------------------------------------ |
+| `npm run dev`     | Dev server (default: http://localhost:4321)      |
+| `npm run build`   | Production build to `dist/`                      |
+| `npm run preview` | Serve `dist/` locally to verify the build        |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Project layout
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+| Path            | Role |
+| --------------- | ---- |
+| `src/pages/`    | Routes: home (`index.astro`), ideas, privacy, terms |
+| `src/components/` | Shared UI (e.g. footer)                         |
+| `src/layouts/`  | HTML shell, fonts, favicon links                 |
+| `src/styles/`   | Global CSS (`pixlfit.css`)                      |
+| `public/`       | Static assets (favicons, etc.), copied to `dist/` root |
+| `dist/`         | Build output (not committed)                     |
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Deployment (Netlify)
 
-## 🧞 Commands
+[`netlify.toml`](netlify.toml) sets `publish = "dist"` and `npm run build` as the build command.
 
-All commands are run from the root of the project, from a terminal:
+### Ideas form
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+The **Got an Idea?** page uses [Netlify Forms](https://docs.netlify.com/forms/setup/) (`name="pixlfit-ideas"`). Submissions appear in the Netlify dashboard under **Forms**. To receive email notifications (for example to `perennialwebstudio@gmail.com`), configure **Site configuration → Forms → (your form) → Notifications & webhooks** in the Netlify UI — that is not defined in this repo.
 
-## 👀 Want to learn more?
+## License / credits
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Content and branding are project-specific. Astro and tooling follow their respective licenses.
