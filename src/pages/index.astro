@@ -21,8 +21,20 @@ import '../styles/pixlfit.css';
 				</div>
 				<span>Pixl<span class="fit-accent">Fit</span></span>
 			</div>
-			<p>Resize - Crop - Style, all at once</p>
+			<div class="topbar-end">
+				<a href="/ideas" class="topbar-ideas-btn">Got an Idea?</a>
+				<p class="topbar-tagline">Resize - Crop - Style, all at once</p>
+			</div>
 		</header>
+
+		<div id="ideaSuccessBanner" class="site-info-banner hidden" role="status" aria-live="polite">
+			<div class="site-info-banner-inner">
+				<p>Your submission was sent!</p>
+				<button type="button" id="ideaSuccessBannerClose" class="site-info-banner-close" aria-label="Dismiss message">
+					×
+				</button>
+			</div>
+		</div>
 
 		<section class="hero">
 			<h1>Make every image <span>fit perfectly</span></h1>
@@ -884,5 +896,25 @@ import '../styles/pixlfit.css';
 	showPlaceholder();
 	updateDownloadAllVisibility();
 	syncWorkspaceVisibility();
+
+	(function initIdeaSuccessBanner() {
+		const banner = document.getElementById('ideaSuccessBanner');
+		if (!banner) return;
+		const params = new URLSearchParams(window.location.search);
+		const show =
+			params.get('submitted') === 'ideas' || sessionStorage.getItem('pixlfitIdeaThanks') === '1';
+		if (!show) return;
+		banner.classList.remove('hidden');
+		sessionStorage.removeItem('pixlfitIdeaThanks');
+		if (params.get('submitted') === 'ideas') {
+			const url = new URL(window.location.href);
+			url.searchParams.delete('submitted');
+			const qs = url.searchParams.toString();
+			history.replaceState({}, '', url.pathname + (qs ? `?${qs}` : '') + url.hash);
+		}
+		document.getElementById('ideaSuccessBannerClose')?.addEventListener('click', () => {
+			banner.classList.add('hidden');
+		});
+	})();
 </script>
 

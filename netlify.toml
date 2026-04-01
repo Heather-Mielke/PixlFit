@@ -1,0 +1,7 @@
+# Build output must include the ideas form HTML so Netlify can register the "pixlfit-ideas" form.
+# Submissions are stored in the Netlify dashboard. To email perennialwebstudio@gmail.com on each
+# submission: Netlify UI → your site → Forms → (form) → Notifications & webhooks → Add notification → Email.
+
+[build]
+	command = "npm run build"
+	publish = "dist"

@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/pixlfit.css';
+---
+
+<Layout title="Got an Idea? — PixlFit">
+	<div class="page-layout">
+		<main class="app-shell">
+			<header class="topbar">
+				<a href="/" class="brand brand--link" aria-label="PixlFit home">
+					<div class="brand-icon" aria-hidden="true">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="lucide lucide-scissors">
+							<circle cx="6" cy="6" r="3" />
+							<path d="M8.12 8.12 12 12" />
+							<path d="M20 4 8.12 15.88" />
+							<circle cx="6" cy="18" r="3" />
+							<path d="M14.8 14.8 20 20" />
+						</svg>
+					</div>
+					<span>Pixl<span class="fit-accent">Fit</span></span>
+				</a>
+				<div class="topbar-end">
+					<a href="/ideas" class="topbar-ideas-btn" aria-current="page">Got an Idea?</a>
+					<p class="topbar-tagline">Resize - Crop - Style, all at once</p>
+				</div>
+			</header>
+
+			<section class="ideas-shell">
+				<h1 class="ideas-title">Got an Idea?</h1>
+				<p class="ideas-lead">
+					Tell us what would make PixlFit more useful — new ways to edit images, filters, sizes, or anything
+					else. We read every message.
+				</p>
+
+				<!-- Netlify parses this at deploy time; keep fields as plain HTML. -->
+				<form
+					class="ideas-form"
+					name="pixlfit-ideas"
+					method="POST"
+					data-netlify="true"
+					netlify-honeypot="bot-field"
+					action="/?submitted=ideas"
+				>
+					<input type="hidden" name="form-name" value="pixlfit-ideas" />
+					<p class="ideas-form-honey">
+						<label>
+							Don’t fill this out if you’re human:
+							<input name="bot-field" />
+						</label>
+					</p>
+					<div class="ideas-form-field">
+						<label for="ideaEmail">Email <span class="ideas-form-optional">(optional)</span></label>
+						<input
+							id="ideaEmail"
+							type="email"
+							name="email"
+							placeholder="you@example.com"
+							autocomplete="email"
+						/>
+					</div>
+					<div class="ideas-form-field">
+						<label for="ideaMessage">Your idea</label>
+						<textarea
+							id="ideaMessage"
+							name="message"
+							required
+							rows="7"
+							placeholder="e.g. A sharpen slider, HEIC export, batch rename…"
+						></textarea>
+					</div>
+					<button type="submit" class="ideas-form-submit">Send idea</button>
+				</form>
+				<p class="ideas-form-note">
+					After you send, you’ll return to the home page with a confirmation message.
+				</p>
+			</section>
+		</main>
+		<SiteFooter />
+	</div>
+</Layout>
