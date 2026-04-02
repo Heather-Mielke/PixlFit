@@ -444,8 +444,27 @@ import '../styles/pixlfit.css';
 		updateMetaLabels();
 	}
 
+	/**
+	 * Canvas `filter` must use CSS filter syntax. WebKit (especially iOS Safari) often ignores
+	 * percentage-based brightness/contrast/saturate/grayscale on 2D canvas; unitless multipliers
+	 * match the spec and work reliably on mobile.
+	 */
 	function filterString() {
-		return `brightness(${brightness.value}%) contrast(${contrast.value}%) saturate(${saturation.value}%) hue-rotate(${hueShift.value}deg) blur(${blur.value}px) grayscale(${grayscale.value}%)`;
+		const b = Math.max(0, Number(brightness.value) || 0) / 100;
+		const c = Math.max(0, Number(contrast.value) || 0) / 100;
+		const s = Math.max(0, Number(saturation.value) || 0) / 100;
+		const h = Number(hueShift.value) || 0;
+		const bl = Math.max(0, Number(blur.value) || 0);
+		const g = Math.max(0, Number(grayscale.value) || 0) / 100;
+		const parts = [
+			`brightness(${b})`,
+			`contrast(${c})`,
+			`saturate(${s})`,
+			`hue-rotate(${h}deg)`,
+			`blur(${bl}px)`,
+			`grayscale(${g})`
+		];
+		return parts.join(' ');
 	}
 
 	function updateMetaLabels() {
