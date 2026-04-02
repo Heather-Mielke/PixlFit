@@ -350,11 +350,12 @@ import '../styles/pixlfit.css';
 	const imageStates = [];
 	let activePreset = 'square';
 
-	/** One window-level pan handler so N cards do not register N mousemove listeners. */
+	/** Pointer-based pan (mouse + touch + pen); document listeners only while dragging. */
 	let activePan = null;
 
-	function onWindowPanMove(event) {
-		if (!activePan) return;
+	function onDocPointerMove(event) {
+		if (!activePan || event.pointerId !== activePan.pointerId) return;
+		event.preventDefault();
 		const x = event.clientX;
 		const y = event.clientY;
 		activePan.state.offsetX += x - activePan.lastX;
@@ -364,12 +365,22 @@ import '../styles/pixlfit.css';
 		drawCard(activePan.state);
 	}
 
-	function onWindowPanEnd() {
+	function onDocPointerEnd(event) {
+		if (!activePan || event.pointerId !== activePan.pointerId) return;
+		document.removeEventListener('pointermove', onDocPointerMove, { passive: false });
+		document.removeEventListener('pointerup', onDocPointerEnd);
+		document.removeEventListener('pointercancel', onDocPointerEnd);
 		activePan = null;
 	}
 
-	window.addEventListener('mousemove', onWindowPanMove);
-	window.addEventListener('mouseup', onWindowPanEnd);
+	function stopPanIfState(state) {
+		if (activePan?.state === state) {
+			document.removeEventListener('pointermove', onDocPointerMove, { passive: false });
+			document.removeEventListener('pointerup', onDocPointerEnd);
+			document.removeEventListener('pointercancel', onDocPointerEnd);
+			activePan = null;
+		}
+	}
 
 	let redrawCardsScheduled = false;
 
@@ -588,13 +599,15 @@ import '../styles/pixlfit.css';
 		ctx.fillStyle = '#b8b8c2';
 		ctx.fillRect(0, 0, lw, lh);
 		ctx.save();
-		clipOutputShape(ctx, lw, lh, getEffectiveCornerRadius(), isCircle);
-		ctx.clip();
+		/* Apply filter before clip — some WebKit builds mishandle filter after clip on mobile. */
 		try {
+			ctx.filter = 'none';
 			ctx.filter = filterString();
 		} catch {
 			ctx.filter = 'none';
 		}
+		clipOutputShape(ctx, lw, lh, getEffectiveCornerRadius(), isCircle);
+		ctx.clip();
 		ctx.drawImage(state.image, drawX, drawY, drawWidth, drawHeight);
 		ctx.restore();
 	}
@@ -634,8 +647,23 @@ import '../styles/pixlfit.css';
 			</div>`;
 			frame.appendChild(dragOverlay);
 
-			frame.addEventListener('mousedown', (event) => {
-				activePan = { state, lastX: event.clientX, lastY: event.clientY };
+			frame.addEventListener('pointerdown', (event) => {
+				if (event.pointerType === 'mouse' && event.button !== 0) return;
+				event.preventDefault();
+				activePan = {
+					state,
+					lastX: event.clientX,
+					lastY: event.clientY,
+					pointerId: event.pointerId
+				};
+				document.addEventListener('pointermove', onDocPointerMove, { passive: false });
+				document.addEventListener('pointerup', onDocPointerEnd);
+				document.addEventListener('pointercancel', onDocPointerEnd);
+				try {
+					frame.setPointerCapture(event.pointerId);
+				} catch {
+					/* ignore */
+				}
 			});
 
 			frameWrap.appendChild(frame);
@@ -707,7 +735,7 @@ import '../styles/pixlfit.css';
 			removeBtn.addEventListener('click', () => {
 				const idx = imageStates.findIndex((s) => s.id === state.id);
 				if (idx >= 0) imageStates.splice(idx, 1);
-				if (activePan?.state === state) activePan = null;
+				stopPanIfState(state);
 				updateMetaLabels();
 				if (!imageStates.length) {
 					showPlaceholder();
@@ -836,12 +864,16 @@ import '../styles/pixlfit.css';
 		handleFiles(event.dataTransfer.files);
 	});
 
+	function onFilterControlAdjust(control) {
+		updateFilterRangeFill(control);
+		updateFilterLabels();
+		scheduleRedrawCards();
+	}
+
 	[cornerRadius, brightness, contrast, saturation, hueShift, blur, grayscale].forEach((control) => {
-		control.addEventListener('input', () => {
-			updateFilterRangeFill(control);
-			updateFilterLabels();
-			scheduleRedrawCards();
-		});
+		/* `input` + `change`: iOS Safari often only fires `change` when a range is released. */
+		control.addEventListener('input', () => onFilterControlAdjust(control));
+		control.addEventListener('change', () => onFilterControlAdjust(control));
 	});
 	outputWidth.addEventListener('input', () => {
 		activePreset = 'custom';
